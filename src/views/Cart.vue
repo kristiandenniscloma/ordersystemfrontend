@@ -19,6 +19,7 @@
             </div>
         </div>
     </div>
+    <a href="http://127.0.0.1:5000/">Place order 2</a>
     <div id="place-holder-container">
         <router-link to="/place-order" id="place-holder">PLACE ORDER</router-link>
     </div>
