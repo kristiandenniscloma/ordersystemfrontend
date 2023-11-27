@@ -1,7 +1,7 @@
 <template>
     <div id="view-cart-container">
         <div id="total">Total: ₱ {{ cartTotal }}.00</div>
-        <router-link to="/cart">View Cart</router-link>
+        <router-link to="/cart" id="add-to-cart">View Cart</router-link>
     </div>
 </template>
 
@@ -26,30 +26,29 @@ export default {
 <style scoped>
 div#view-cart-container {
     overflow: auto;
-    position: fixed;
-    bottom: 0;
-    background-color: rgba(0,0,0, 0.8);
+    background-color: crimson;
     width: 100%;
     display: block;
     padding: 27px;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    margin-top: 20px;
 }
 #view-cart-container a {
     color: #000;
-    width: 200px;
+    width: 152px;
     display: block;
-    height: 65px;
+    height: 51px;
     text-align: center;
-    padding-top: 9px;
-    border-radius: 15px;
-    background-color: #fff;
-    font-size: 27px;
+    padding-top: 7px;
+    border-radius: 100px;
+    background-color: gold;
+    font-size: 23px;
     float: right;
 }
 div#total {
     width: 300px;
-    font-size: 35px;
+    font-size: 28px;
     color: #fff;
     float: left;
 }

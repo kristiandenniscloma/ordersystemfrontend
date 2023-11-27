@@ -1,7 +1,8 @@
 <template>
     <div id="back-container">
         <div id="total">Total: ₱ {{ cartTotal }}.00</div>
-        <a @click="redirectToPreviousPage()">Back</a>
+        <!--<a @click="redirectToPreviousPage()">Back</a>-->
+        <router-link :to="propsPrevLink">Back</router-link>
     </div>
 </template>
 
@@ -9,10 +10,19 @@
 import { useDataStore } from '../stores/dataStore';
 
 export default {
+    props: {
+        propsPrevLink : String
+    },
+
     data(){
         return {
+            prevLink : '',
             dataStore: useDataStore()
         }
+    },
+
+    created(){
+        console.log(this.propsPrevLink)
     },
 
     methods: {
@@ -31,9 +41,7 @@ export default {
 <style scoped>
 div#back-container {
     overflow: auto;
-    position: fixed;
-    bottom: 0;
-    background-color: rgba(0,0,0, 0.8);
+    background-color: crimson;
     width: 100%;
     display: block;
     padding: 27px;
@@ -47,8 +55,8 @@ div#back-container {
     height: 65px;
     text-align: center;
     padding-top: 9px;
-    border-radius: 15px;
-    background-color: #fff;
+    border-radius: 100px;
+    background-color: gold;
     font-size: 27px;
     float: right;
 }

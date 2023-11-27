@@ -1,7 +1,4 @@
 @import './base.css';
-body{
-  background-color: #ddd;
-}
 
 body a{
   text-decoration: none;
@@ -12,19 +9,21 @@ body a{
   margin: 0 auto;
 }
 
-#side-bar {
-  width: 20%;
-  padding: 15px;
-  float: left;
+.inner-background{
+  width: 100%;
+  position: fixed;
+  z-index: -100;
 }
+
 div#content {
-  width: 80%;
+  width: calc(80% - 30px);
   float: left;
   padding-right: 15px;
   padding-top: 15px;
   padding-left: 9px;
+  height: 986px;
+  overflow: auto;
 }
-
 div#categories {
   display: flex;
   flex-direction: column;
@@ -35,13 +34,12 @@ div#categories {
   height: auto;
   margin: auto;
   display: block;
-  max-height: 82px;
+  max-height: 50px;
 }
 
 .category-name {
   text-align: center;
   position: absolute;
-  bottom: 20px;
   right: 0;
   left: 0;
 }
@@ -49,12 +47,12 @@ div#categories {
   border-radius: 10px;
   background-color: #fff;
   overflow: hidden;
-  padding: 15px;
+  padding: 8px;
   position: relative;
-  height: 139px;
+  height: 111px;
   width: 141px;
   margin: 0 auto;
-  margin-bottom: 15px;
+  margin-bottom: 7px;
 }
 #items .item {
   width: calc(33.33% - 30px);
@@ -63,7 +61,6 @@ div#categories {
   border-radius: 20px;
   margin: 0 15px 15px 15px;
   overflow: hidden;
-  padding: 20px;
   height: 256px;
 }
 .item-thumb {
@@ -78,4 +75,71 @@ div#categories {
 }
 div#main-content {
   overflow: AUTO;
+}
+input.form-file {
+  margin-left: 0;
+}
+img.header-banner {
+  width: 100%;
+}
+.hide-scroll {
+  overflow: hidden;
+}
+.white-fade-top, .white-fade-bottom {
+  background-image: url(http://localhost:5173/src/assets/white-fade.png);
+  position: absolute;
+  width: 171px;
+  height: 107px;
+  background-position: 0 -92px;
+  z-index: 100;
+  background-repeat: no-repeat;
+}
+.white-fade-top{
+  background-image: url('http://localhost:5173/src/assets/white-fade.png');
+}
+.white-fade-bottom{
+  background-image: url('http://localhost:5173/src/assets/white-fade-bottom.png');
+}
+.white-fade-top {
+  top: 0;
+}
+.white-fade-bottom {
+  bottom: 10px;
+}
+#side-bar {
+  width: 153px;
+  padding: 15px;
+  float: left;
+  height: 1021px;
+  overflow: hidden;
+  position: relative;
+  padding-right: 42px;
+  margin-top: 5px;
+}
+div#categories-container {
+  overflow-y: auto;
+  width: 147px;
+  height: 100%;
+  padding-top: 62px;
+  padding-bottom: 63px;
+  margin-left: -20px;
+}
+.page-orders{
+  background-color: #000;
+}
+.hide-inner-scrolls div{
+  overflow: hidden !important;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }

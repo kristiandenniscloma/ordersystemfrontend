@@ -1,13 +1,23 @@
 <template>
-    <div id="categories">
-        <router-link :to="'/home/' + i._id" v-for="(i, key) in categories" class="category">
-            <div class="category-thumb">
-                <img :src="i.image" />
-            </div>
-            <div class="category-name">
-                {{ i.name }}
-            </div>
-        </router-link>
+    <div id="categories-container">
+        <div id="categories">
+            <router-link :to="'/home/' + i.id" v-for="(i, key) in categories" class="category">
+                <div class="category-thumb">
+                    <img :src="i.image_url" />
+                </div>
+                <div class="category-name">
+                    {{ i.name }}
+                </div>
+            </router-link>
+            <router-link :to="'/home/' + i.id" v-for="(i, key) in categories" class="category">
+                <div class="category-thumb">
+                    <img :src="i.image_url" />
+                </div>
+                <div class="category-name">
+                    {{ i.name }}
+                </div>
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -28,6 +38,7 @@ export default{
     },
 
     mounted(){
+
        // this.filterHomeItems(this.$route.params.id);
     },
 
@@ -38,3 +49,7 @@ export default{
     }
 }
 </script> 
+
+<style scoped>
+
+</style>

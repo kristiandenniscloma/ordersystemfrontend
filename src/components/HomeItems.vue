@@ -1,8 +1,8 @@
 <template>
     <div id="items">
-        <router-link v-for="(i, key) in computeItems" class="item" :to="'/item/' + i._id">
+        <router-link v-for="(i, key) in computeItems" class="item" :to="'/item/' + i.id">
             <div class="item-thumb">
-                <img :src="i.image" />
+                <img :src="i.image_url" />
             </div>
             <div class="item-name">
                 {{ i.name }}
@@ -40,14 +40,14 @@ export default{
 
     methods: {
         handleRouteChange(){
-            console.log('handleRouteChange');
+            //console.log('handleRouteChange');
             this.dataStore.updateHomeItems(this.$route.params.id);
         }
     },
 
     computed: {
         computeItems(){
-            console.log(this.dataStore.homeItems);
+            //console.log(this.dataStore.homeItems);
             return this.dataStore.homeItems;
         }
     }

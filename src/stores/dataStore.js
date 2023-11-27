@@ -1,40 +1,27 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-import { compileScript } from "vue/compiler-sfc";
+import { supabase } from '../lib/supabaseClient'
 
 export const useDataStore = defineStore('data', {
     state(){
         return{
             categories: {},
+            config: {},
             items: {},
             homeItems : {},
             loading: false,
             error: null,
             cart: [],
-            cartTotal: 0
+            cartTotal: 0,
+            orders : [],
+            userId : '',
+            pageStorage : 'Food Ordering'
         }
     },
 
     actions:{
-        async submitOrder(){
-            const postData = this.cart;
-            const response = await axios.post('https://foodorderingsystem-lac.vercel.app/api/v1/orders', postData)
-            //const response = await axios.post('http://localhost:5000/api/v1/orders', postData)
-            .then((response) => {
-                // Handle the response data here
-                console.log('Response:', response.data);
-                console.log("order placed")
-                this.cart = []
-                this.cartTotal = 0
-            })
-            .catch((error) => {
-            // Handle any errors that occurred during the request
-                console.error('Error:', error);
-            });
-        },
-
         addItemInCart(key){
-            console.log('add: ' + key);
+            //console.log('add: ' + key);
             this.cart[key]['quantity'] = this.cart[key]['quantity'] + 1;
             this.cartTotal += this.cart[key]['item']['price'];
         },
@@ -45,13 +32,13 @@ export const useDataStore = defineStore('data', {
             this.cart[key]['quantity'] = this.cart[key]['quantity'] - 1;
             this.cartTotal -= this.cart[key]['item']['price'];
 
-            console.log(this.cart[key]);
-            console.log('deduct: ' + this.cart[key]['price']);
+            //console.log(this.cart[key]);
+            //console.log('deduct: ' + this.cart[key]['price']);
 
             if(this.cart[key]['quantity'] <= 0){
                 this.cart.splice(key, 1);
 
-                console.log(this.cart);
+                //console.log(this.cart);
             }
         },
 
@@ -60,12 +47,12 @@ export const useDataStore = defineStore('data', {
 
             let already_in_cart = false;
             for(let key in current_cart){
-                if(current_cart[key]['item']['id'] == item._id){
+                if(current_cart[key]['item']['id'] == item.id){
                     current_cart[key]['quantity'] = current_cart[key]['quantity'] + 1;
                     this.cartTotal += item.price;
                     already_in_cart = true;
 
-                    console.log("test1");
+                    //console.log("test1");
                     break;
                 }
             }
@@ -84,11 +71,50 @@ export const useDataStore = defineStore('data', {
 
         async fetchCategoriesAPI(){
             this.loading = true;
+            //console.log('fetch categories');
 
             try{
-                //const response = await axios.get('https://y7g1z.wiremockapi.cloud/categories');
-                const response = await axios.get('https://foodorderingsystem-lac.vercel.app/api/v1/categories/all');
-                this.categories = response.data;
+                const { data, error } = await supabase
+                .from('subcategories')
+                .select('*')
+                .order('name', { ascending: true })
+
+                for(let key in data){
+                    const { data:imageurl } = supabase
+                    .storage
+                    .from(this.pageStorage)
+                    .getPublicUrl(data[key]['image'])
+
+                    data[key]['image_url'] = imageurl.publicUrl
+                }
+
+                this.categories = data
+
+                //console.log(this.categories)
+            }catch(error){
+                console.log(error);
+            }
+        },
+
+        async fetchConfigAPI(){
+            this.loading = true;
+            //console.log('fetch config');
+
+            try{
+                const { data, error } = await supabase
+                .from('config')
+                .select('*')
+
+                for(let key in data){
+                    //console.log(data[key]['variable'])
+                    this.config[data[key]['variable']]= {
+                        'str' : data[key]['value_str'],
+                        'int' : data[key]['value_int'],
+                    }
+                }
+
+                //console.log(this.config)
+
             }catch(error){
                 console.log(error);
             }
@@ -96,10 +122,26 @@ export const useDataStore = defineStore('data', {
 
         async fetchItemsAPI(){
             this.loading = true;
+            //console.log('fetch items');
 
             try{
-                const response = await axios.get('https://foodorderingsystem-lac.vercel.app/api/v1/items/all');
-                this.items = response.data;
+                const { data, error } = await supabase
+                .from('items')
+                .select('*')
+                .order('name', { ascending: true })
+
+                for(let key in data){
+                    const { data:imageurl } = supabase
+                    .storage
+                    .from(this.pageStorage)
+                    .getPublicUrl(data[key]['image'])
+
+                    data[key]['image_url'] = imageurl.publicUrl
+                }
+
+                this.items = data
+
+                console.log(this.items)
             }catch(error){
                 console.log(error);
             }
@@ -110,17 +152,20 @@ export const useDataStore = defineStore('data', {
         },
 
         getItemsByCategory(id_category = ''){
+            //console.log(id_category)
+
+            //console.log(this.items)
             if(id_category == 'all'){
                 return this.items;
             }else{
-                const items = this.items.filter(t => t.id_category == id_category);
+                const items = this.items.filter(t => t.category == id_category);
                 return items;
             }
         },
         
         getItemById(id){
-            console.log(this.items.filter(t => t._id == id));
-            return this.items.filter(t => t._id == id);
+            //console.log(this.items.filter(t => t.id == id));
+            return this.items.filter(t => t.id == id);
         },
 
         updateHomeItems(id_category){
